@@ -1,15 +1,3 @@
-const predict = (str, cb) => {
-	$.get('/predict', {
-			input: str
-		})
-		.then(data => {
-			cb(data.new_word);
-		})
-		.catch(e => {
-			console.error(e);
-		});
-};
-
 /**
  * Set an alpine.js property
  *
@@ -32,7 +20,30 @@ const getProp = (key) => {
 	return $('#root').get(0).__x.$data[key];
 };
 
+/**
+ * Predict the next word given a string
+ *
+ * @function predict
+ * @param {string} str - Given string
+ * @param {function} cb - Callback function
+ */
+const predict = (str, cb) => {
+	$.get('/predict', {
+			input: str
+		})
+		.then(data => {
+			cb(data.new_word);
+		})
+		.catch(e => {
+			console.error(e);
+		});
+};
 
+/**
+ * Get the new word and update the current text
+ *
+ * @function update
+ */
 const update = () => {
 	const updating = getProp('updating');
 	if (updating) return;
