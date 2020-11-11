@@ -16,7 +16,7 @@
 	<script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.5.0/dist/alpine-ie11.min.js" defer></script>
 </head>
 
-<body id="root" x-data="{text: '', submitted: false, updating: false}" @keydown="if ($event.key === 'Enter') { update() } else if ($event.key === 'Escape') { text = ''; submitted = false }" class="uk-cover-container">
+<body id="root" x-data="{text: '', submitted: false}" @keydown="if ($event.key === 'Enter') { update() } else if ($event.key === 'Escape') { text = ''; submitted = false }" class="uk-cover-container">
 	<img src="/static/bg.jpg" alt="Background image of Trump" uk-cover>
 	<div class="uk-overlay uk-overlay-primary uk-position-center" x-show="submitted">
 		<p id="text" class="uk-text-lead uk-text-italic" x-text="text"></p>

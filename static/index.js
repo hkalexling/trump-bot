@@ -39,14 +39,15 @@ const predict = (str, cb) => {
 		});
 };
 
+let updating = false;
 /**
  * Get the new word and update the current text
  *
  * @function update
  */
 const update = () => {
-	const updating = getProp('updating');
 	if (updating) return;
+	updating = true;
 
 	setProp('submitted', true);
 
@@ -54,7 +55,7 @@ const update = () => {
 	text = text.charAt(0).toUpperCase() + text.slice(1);
 
 	predict(text, newWord => {
-		setProp('updating', false);
+		updating = false;
 		setProp('text', text + ' ' + newWord);
 	});
 };
