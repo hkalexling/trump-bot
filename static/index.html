@@ -47,10 +47,11 @@
 				<h2 class="uk-modal-title">About</h2>
 			</div>
 
-			<div class="uk-modal-body" uk-overflow-auto>
+			<div class="uk-modal-body uk-margin-bottom" uk-overflow-auto>
 				<p>This is a tiny NLP project that generates sentences similar to what Trump would say in his speeches. It uses an LSTM network, and is trained on the transcription data from speeches made by Trump at various points in his 2016 president campaign (<a href="https://github.com/ryanmcdermott/trump-speeches">dataset</a>). The dataset contains 14803 sentences and the vocabulary size is 6171.</p>
 
 				<h3>Model</h3>
+				<p>The IPython notebook that built the model can be found <a href="https://github.com/hkalexling/trump-bot/blob/master/trumpspeech.ipynb">here</a>. The following table shows the summary of the model (produced by <code>model.summary()</code>).</p>
 				<pre>
 					<code>
 Model: "sequential"
