@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="X-UA-Compatible" content="IE=edge">
+	<title>TrumpBot</title>
+	<meta name="description" content="TrumpBot">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/css/uikit.min.css" />
+	<link rel="stylesheet" href="/static/style.css" />
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=matchMedia%2Cdefault&flags=gated"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.5.0/dist/alpine.min.js"></script>
+	<script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.5.0/dist/alpine-ie11.min.js" defer></script>
+</head>
+
+<body id="root" x-data="{text: '', submitted: false, updating: false}" @keydown="if ($event.key === 'Enter') { update() } else if ($event.key === 'Escape') { text = ''; submitted = false }" class="uk-cover-container">
+	<img src="/static/bg.jpg" alt="Background image of Trump" uk-cover>
+	<div class="uk-overlay uk-overlay-primary uk-position-center" x-show="submitted">
+		<p id="text" class="uk-text-lead uk-text-italic" x-text="text"></p>
+		<p class="uk-text-meta uk-text-right">Press enter to generate additional words. Press escape to clear.</p>
+	</div>
+	<div class="uk-position-top-right uk-margin-top uk-margin-right" style="z-index:100">
+		<a href="#modal" class="uk-icon-button" uk-icon="info" uk-toggle></a>
+	</div>
+	<div class="uk-section uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport="">
+		<div class="uk-width-1-1">
+			<div class="uk-container">
+				<form @submit.prevent="update()" x-show="!submitted">
+					<fieldset class="uk-fieldset">
+						<div class="uk-margin">
+							<input class="uk-input uk-form-large" id="input" type="text" placeholder="Type something and press enter to make America great again!" x-model="text">
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="modal" class="uk-modal-container" uk-modal>
+		<div class="uk-modal-dialog">
+			<button class="uk-modal-close-default" type="button" uk-close></button>
+			<div class="uk-modal-header">
+				<h2 class="uk-modal-title">About</h2>
+			</div>
+
+			<div class="uk-modal-body" uk-overflow-auto>
+				<p>This is a tiny NLP project that generates sentences similar to what Trump would say in his speeches. It uses an LSTM network, and is trained on the transcription data from speeches made by Trump at various points in his 2016 president campaign (<a href="https://github.com/ryanmcdermott/trump-speeches">dataset</a>). The dataset contains 14803 sentences and the vocabulary size is 6171.</p>
+
+				<h3>Model</h3>
+				<pre>
+					<code>
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 124, 10)           61710     
+_________________________________________________________________
+lstm (LSTM)                  (None, 256)               273408    
+_________________________________________________________________
+dropout (Dropout)            (None, 256)               0         
+_________________________________________________________________
+dense (Dense)                (None, 6171)              1585947   
+=================================================================
+Total params: 1,921,065
+Trainable params: 1,921,065
+Non-trainable params: 0
+_________________________________________________________________
+					</code>
+				</pre>
+
+				<h3>System Design</h3>
+				<p>The model is built and trained with Tensorflow and Keras on Google Colab. The trained model is then exported in the <a href="https://www.tensorflow.org/guide/saved_model">SavedModel</a> format and copied to my server, where it's turned into a RESTful API with <a href="https://github.com/tensorflow/serving"><code>tensorflow/serving</code></a>. I then built a simple web server in Flask to serve the static files and connect to the prediction API.</p>
+			</div>
+
+			<div class="uk-modal-footer uk-text-right">
+				<button class="uk-button uk-button-primary uk-modal-close" type="button">Close</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.5.9/dist/js/uikit-icons.min.js"></script>
+	<script src="/static/index.js"></script>
+</body>
+
+</html>
