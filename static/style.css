@@ -1,5 +1,6 @@
 .uk-overlay {
-    max-width: 80%;
+    width: 80%;
+    max-width: 1000px;
     max-height: 80%;
     overflow-y: scroll;
 }
